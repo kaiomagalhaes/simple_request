@@ -13,6 +13,8 @@ http_interactions:
       - "*/*"
       User-Agent:
       - Ruby
+      Content-Type:
+      - application/json
   response:
     status:
       code: 200
@@ -21,7 +23,7 @@ http_interactions:
       Server:
       - Cowboy
       Date:
-      - Mon, 31 Oct 2022 14:57:20 GMT
+      - Mon, 31 Oct 2022 22:39:57 GMT
       Connection:
       - keep-alive
       X-Frame-Options:
@@ -45,9 +47,9 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - c0d86c1b-1ca8-4ac8-8f35-5778efe64276
+      - fe494c40-4f91-4830-8f1f-1f78b46797aa
       X-Runtime:
-      - '0.039651'
+      - '0.008046'
       Content-Length:
       - '49'
       Via:
@@ -55,5 +57,5 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"text":"Roadrunner is processing your request."}'
-  recorded_at: Mon, 31 Oct 2022 14:57:20 GMT
+  recorded_at: Mon, 31 Oct 2022 22:39:58 GMT
 recorded_with: VCR 6.1.0

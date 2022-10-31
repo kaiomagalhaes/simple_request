@@ -37,7 +37,7 @@ RSpec.describe SimpleRequest do
         it "sends the authorization header" do
           VCR.use_cassette("get#authorization") do
             key = "my-cool-key"
-            SimpleRequest.get("https://codelitt.com/", expect: :full, authorization: key)
+            SimpleRequest.get("https://api.roadrunner.codelitt.dev", authorization: key)
 
             fixture_path = "spec/fixtures/vcr_cassettes/get_authorization.yml"
             expect(YAML.load_file(fixture_path)["http_interactions"][0].dig("request", "headers",
@@ -83,7 +83,7 @@ RSpec.describe SimpleRequest do
         it "sends the authorization header" do
           VCR.use_cassette("post#authorization") do
             key = "my-cool-key"
-            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", expect: :full, authorization: key)
+            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", authorization: key)
 
             fixture_path = "spec/fixtures/vcr_cassettes/post_authorization.yml"
             expect(YAML.load_file(fixture_path)["http_interactions"][0].dig("request", "headers",
@@ -129,7 +129,7 @@ RSpec.describe SimpleRequest do
         it "sends the authorization header" do
           VCR.use_cassette("patch#authorization") do
             key = "my-cool-key"
-            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", expect: :full, authorization: key)
+            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", authorization: key)
 
             fixture_path = "spec/fixtures/vcr_cassettes/patch_authorization.yml"
             expect(YAML.load_file(fixture_path)["http_interactions"][0].dig("request", "headers",

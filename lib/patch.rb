@@ -6,6 +6,7 @@ class Patch < Request
   def call
     request = Net::HTTP::Patch.new(uri.path)
 
+    add_json_content_type!(request)
     add_authorization_header!(request)
     add_body!(request)
 

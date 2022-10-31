@@ -10,6 +10,14 @@ class Request
     @params = params
   end
 
+  def json?
+    configuration[:expect] == :json
+  end
+
+  def add_json_content_type!(request)
+    request.content_type = "application/json" if json?
+  end
+
   def http
     return @http if @http
 

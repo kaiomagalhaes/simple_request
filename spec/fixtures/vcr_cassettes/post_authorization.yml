@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.roadrunner.codelitt.dev/flows
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - my-cool-key
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Mon, 31 Oct 2022 14:55:34 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Vary:
+      - Accept
+      Etag:
+      - W/"101ebaba05eb0da57095273dfd17d690"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - c9ec0b6c-82e0-4818-9864-3656e1ba2ef3
+      X-Runtime:
+      - '0.014862'
+      Content-Length:
+      - '49'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"text":"Roadrunner is processing your request."}'
+  recorded_at: Mon, 31 Oct 2022 14:55:34 GMT
+recorded_with: VCR 6.1.0

@@ -10,6 +10,18 @@ class Request
     @params = params
   end
 
+  def http
+    return @http if @http
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = use_ssl?
+    http
+  end
+
+  def uri
+    @uri ||= URI.parse(clean_url)
+  end
+
   def configuration
     @configuration ||= DEFAULT_PARAMS.merge(@params)
   end
@@ -27,12 +39,12 @@ class Request
     end
   end
 
-  def use_ssl?(url)
-    url.match?(/^https/)
+  def use_ssl?
+    @url.match?(/^https/)
   end
 
-  def clean_url(url)
-    url.gsub(" ", "%20")
+  def clean_url
+    @url.gsub(" ", "%20")
   end
 
   def add_authorization_header!(req)

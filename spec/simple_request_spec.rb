@@ -93,4 +93,50 @@ RSpec.describe SimpleRequest do
       end
     end
   end
+
+  describe "#patch" do
+    context "with no configuration" do
+      it "returns the json body" do
+        VCR.use_cassette("patch#no-configuration") do
+          body_key = "my-cool-key"
+          response = SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", {
+                                          body: {
+                                            key: body_key
+                                          }
+                                        })
+
+          expect(response["text"]).to eql("Roadrunner is processing your request.")
+        end
+      end
+    end
+    context "with custom configuration" do
+      context "with body: value" do
+        it "sends the body" do
+          VCR.use_cassette("patch#body") do
+            body_key = "my-cool-key"
+            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", body: {
+                                 key: body_key
+                               })
+
+            fixture_path = "spec/fixtures/vcr_cassettes/post_body.yml"
+            expect(YAML.load_file(fixture_path)["http_interactions"][0].dig("request", "body",
+                                                                            "string")).to eql("{\"key\":\"my-cool-key\"}")
+          end
+        end
+      end
+
+      context "with authorization: value" do
+        it "sends the authorization header" do
+          VCR.use_cassette("patch#authorization") do
+            key = "my-cool-key"
+            SimpleRequest.post("https://api.roadrunner.codelitt.dev/flows", expect: :full, authorization: key)
+
+            fixture_path = "spec/fixtures/vcr_cassettes/patch_authorization.yml"
+            expect(YAML.load_file(fixture_path)["http_interactions"][0].dig("request", "headers",
+                                                                            "Authorization")[0]).to eql(key)
+          end
+        end
+      end
+    end
+  end
 end

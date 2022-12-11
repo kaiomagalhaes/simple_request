@@ -1,22 +1,56 @@
 # SimpleRequest
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/simple_request`. To experiment with that code, run `bin/console` for an interactive prompt.
+This a ruby gem that abstracts both 'net/http' and 'json'. The goal is to make it easier to make HTTP requests.
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
-Install the gem and add to the application's Gemfile by executing:
+Add the following line to your Gemfile:
 
-    $ bundle add simple_request
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install simple_request
+```
+gem 'simple_request', git: 'https://github.com/kaiomagalhaes/simple_request.git'
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+
+```
+# Get
+
+url = 'https://google.com'
+SimpleRequest.get(url)
+SimpleRequest.get(url, authorization: 'my-cool-key')
+SimpleRequest.get(url, authorization: 'my-cool-key', expect: :json) # when JSON it parses and returns the body.
+SimpleRequest.get(url, authorization: 'my-cool-key', expect: :html) # when JSON it parses and returns the html body
+SimpleRequest.get(url, authorization: 'my-cool-key', expect: :full) # when JSON it returns the raw response
+
+# Post
+
+url = 'https://google.com'
+body = {
+  name: 'cool name'
+}
+
+SimpleRequest.post(url, body:)
+SimpleRequest.post(url, authorization: 'my-cool-key', body:)
+SimpleRequest.post(url, authorization: 'my-cool-key', body:, expect: :json) # when JSON it parses and returns the body.
+SimpleRequest.post(url, authorization: 'my-cool-key', body: expect: :html) # when JSON it parses and returns the html body
+SimpleRequest.post(url, authorization: 'my-cool-key', body: expect: :full) # when JSON it returns the raw response
+
+# Patch
+
+url = 'https://google.com'
+body = {
+  name: 'cool name',
+  id: 1
+}
+
+SimpleRequest.patch(url, body:)
+SimpleRequest.patch(url, authorization: 'my-cool-key', body:)
+SimpleRequest.patch(url, authorization: 'my-cool-key', body:, expect: :json) # when JSON it parses and returns the body.
+SimpleRequest.patch(url, authorization: 'my-cool-key', body: expect: :html) # when JSON it parses and returns the html body
+SimpleRequest.patch(url, authorization: 'my-cool-key', body: expect: :full) # when JSON it returns the raw response
+
 
 ## Development
 
@@ -26,7 +60,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/simple_request. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/simple_request/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/kaiomagalhaes/simple_request. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/kaiomagalhaes/simple_request/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 

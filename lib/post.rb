@@ -3,7 +3,7 @@
 require_relative "request"
 
 class Post < Request
-  def call
+  def call!
     request = Net::HTTP::Post.new(uri.path)
 
     add_json_content_type!(request)

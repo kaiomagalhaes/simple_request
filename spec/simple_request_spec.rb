@@ -14,9 +14,38 @@ RSpec.describe SimpleRequest do
           expect(SimpleRequest.get("https://api.roadrunner.codelitt.dev")["status"]).to eql(200)
         end
       end
+
+      it "only tries once" do
+        wrong_url = "https://dev-leadgrab-admin.codelitt.dev/"
+
+        object = Get.new(wrong_url, {})
+
+        expect(object).to receive(:call!).once
+
+        object.call
+      end
+
+      it "returns the error if SocketError" do
+        VCR.use_cassette("get#with-socket-error", record: :all) do
+          wrong_url = "https://codelitt.comm/"
+          expect(SimpleRequest.get(wrong_url)).to be_a(SocketError)
+        end
+      end
     end
 
     context "with custom configuration" do
+      context "with retry: 2" do
+        it "retries the request 2 times" do
+          wrong_url = "https://dev-leadgrab-admin.codelitt.dev/"
+
+          object = Get.new(wrong_url, retry: 2)
+
+          expect(object).to receive(:call!).twice
+
+          object.call
+        end
+      end
+
       context "with expect: :html" do
         it "returns the html body" do
           VCR.use_cassette("get#html") do

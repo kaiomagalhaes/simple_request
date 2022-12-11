@@ -2,12 +2,26 @@
 
 class Request
   DEFAULT_PARAMS = {
-    expect: :json # :json, :html, full
+    expect: :json, # :json, :html, fullo
+    retry: 1
   }.freeze
 
   def initialize(url, params)
     @url = url
     @params = params
+  end
+
+  def call
+    retries = configuration[:retry]
+    result = nil
+
+    (1..retries).each do
+      result = call!
+    rescue StandardError => e
+      result = e
+    end
+
+    result
   end
 
   def json?

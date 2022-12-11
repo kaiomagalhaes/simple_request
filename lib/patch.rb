@@ -3,7 +3,7 @@
 require_relative "request"
 
 class Patch < Request
-  def call
+  def call!
     request = Net::HTTP::Patch.new(uri.path)
 
     add_json_content_type!(request)

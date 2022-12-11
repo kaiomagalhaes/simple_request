@@ -50,7 +50,7 @@ SimpleRequest.patch(url, authorization: 'my-cool-key', body:)
 SimpleRequest.patch(url, authorization: 'my-cool-key', body:, expect: :json) # when JSON it parses and returns the body.
 SimpleRequest.patch(url, authorization: 'my-cool-key', body: expect: :html) # when JSON it parses and returns the html body
 SimpleRequest.patch(url, authorization: 'my-cool-key', body: expect: :full) # when JSON it returns the raw response
-
+```
 
 ## Development
 

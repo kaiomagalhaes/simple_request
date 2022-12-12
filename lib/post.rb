@@ -10,7 +10,7 @@ class Post < Request
     add_authorization_header!(request)
     add_body!(request)
 
-    respond(http, request)
+    [http, request]
   end
 
   def body

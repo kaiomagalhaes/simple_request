@@ -35,14 +35,53 @@ RSpec.describe SimpleRequest do
 
     context "with custom configuration" do
       context "with retry: 2" do
-        it "retries the request 2 times" do
-          wrong_url = "https://dev-leadgrab-admin.codelitt.dev/"
+        it "retries the request once if there is no error" do
+          VCR.use_cassette("get#with-retry-no-error") do
+            object = Get.new("https://codelitt.com", expect: :html, retry: { times: 2 })
 
-          object = Get.new(wrong_url, retry: 2)
+            object.call
 
-          expect(object).to receive(:call!).twice
+            fixture_path = "spec/fixtures/vcr_cassettes/get_with-retry-no-error.yml"
 
-          object.call
+            expect(YAML.load_file(fixture_path)["http_interactions"].size).to be(1)
+          end
+        end
+
+        it "retries the request 2 times if there is an error" do
+          VCR.use_cassette("get#with-retry-error") do
+            wrong_url = "https://dev-leadgrab-admin.codelitt.dev/"
+
+            object = Get.new(wrong_url, retry: { times: 2 })
+
+            allow(object).to receive(:call!).twice.and_raise(Errno::ECONNREFUSED)
+
+            object.call
+          end
+        end
+      end
+
+      context "with retry: 2 and a list of valid codes" do
+        it "does not retry if the first response code is in the list" do
+          VCR.use_cassette("get#with-retry-valid-code") do
+            object = Get.new("https://codelitt.com", expect: :html, retry: { times: 2, valid_codes: [200] })
+
+            object.call
+
+            fixture_path = "spec/fixtures/vcr_cassettes/get_with-retry-valid-code.yml"
+
+            expect(YAML.load_file(fixture_path)["http_interactions"].size).to be(1)
+          end
+        end
+        it "retries the request twice if the result code isn't in the list" do
+          VCR.use_cassette("get#with-retry-invalid-code") do
+            object = Get.new("https://codelitt.com", expect: :html, retry: { times: 2, valid_codes: [301] })
+
+            object.call
+
+            fixture_path = "spec/fixtures/vcr_cassettes/get_with-retry-invalid-code.yml"
+
+            expect(YAML.load_file(fixture_path)["http_interactions"].size).to be(2)
+          end
         end
       end
 

@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require "debug"
 class Request
   DEFAULT_PARAMS = {
     expect: :json, # :json, :html, fullo
-    retry: 1
+    retry: {
+      times: 1,
+      valid_codes: []
+    }
   }.freeze
 
   def initialize(url, params)
@@ -12,16 +16,28 @@ class Request
   end
 
   def call
-    retries = configuration[:retry]
-    result = nil
+    retries = configuration.dig(:retry, :times)
+    valid_codes = configuration.dig(:retry, :valid_codes)
+    response = nil
 
-    (1..retries).each do
-      result = call!
+    (1..retries).each do |number|
+      http, request = call!
+      res = http.request(request)
+      response = respond(res)
+      puts number
+
+      if valid_codes.any?
+        code = res.code.to_i
+        in_code = valid_codes.map(&:to_i).index(code)
+        break if in_code
+      else
+        break
+      end
     rescue StandardError => e
-      result = e
+      response = e
     end
 
-    result
+    response
   end
 
   def json?
@@ -45,12 +61,12 @@ class Request
   end
 
   def configuration
-    @configuration ||= DEFAULT_PARAMS.merge(@params)
+    @configuration ||= DEFAULT_PARAMS.merge(@params) do |_k, old, new|
+      old.instance_of?(Hash) && new.instance_of?(Hash) ? old.merge(new) : new
+    end
   end
 
-  def respond(http, req)
-    response = http.request(req)
-
+  def respond(response)
     case configuration[:expect]
     when :json
       JSON.parse(response.body)

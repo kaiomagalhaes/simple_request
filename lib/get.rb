@@ -9,6 +9,6 @@ class Get < Request
     add_json_content_type!(request)
     add_authorization_header!(request)
 
-    respond(http, request)
+    [http, request]
   end
 end
